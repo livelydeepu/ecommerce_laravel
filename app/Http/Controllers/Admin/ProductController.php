@@ -191,6 +191,7 @@ class ProductController extends Controller
             $ext = $image->extension();
             $image_name_attr = time().'.'.$ext;
             $request->file("attr_image.$key")->storeAs('/public/media/', $image_name_attr);
+            $productAttrs['attr_image'] = $image_name_attr;
         }
         foreach ($skuArr as $key => $row) {
             $productAttrs=[];
@@ -203,11 +204,9 @@ class ProductController extends Controller
             $productAttrs['color_id'] = $colorArr[$key];
 
             if($idAttr[$key] != '') {
-                $productAttrs['attr_image'] = $image_name_attr;
                 DB::table('product_attributes')->where(['id'=>$idAttr[$key]])->update($productAttrs);
             }
             else {
-                $productAttrs['attr_image'] = $image_name_attr;
                 DB::table('product_attributes')->insert($productAttrs);
             }
         }

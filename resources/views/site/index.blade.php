@@ -122,23 +122,37 @@
 								</ul>
 								<!-- Tab panes -->
 								<div class="tab-content">
-									<!-- Start men product category -->
-									<div class="tab-pane fade in active" id="men">
+									<!-- Start men product category -->	
+									@php
+									$cat_count = 1;
+									@endphp
+									@foreach($home_categories as $catlist)						
+									@php
+									$cat_class="";
+									if($cat_count==1) {
+										$cat_class="in active";
+										$cat_count++;
+									}
+									@endphp
+									<div class="tab-pane fade {{$cat_class}}" id="#cat{{$catlist->id}}">
 										<ul class="aa-product-catg">
 											<!-- start single product item -->
+											@foreach($home_category_products[$catlist->id] as $prdlist)
 											<li>
 												<figure>
-													<a class="aa-product-img" href="#"><img src="{{asset('site/img/man/polo-shirt-2.png')}}" alt="polo shirt img"></a>
+													<a class="aa-product-img" href="#"><img src="{{asset('storage/media/'.$prdlist->image)}}" alt=""></a>
 													<a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
 														<figcaption>
-														<h4 class="aa-product-title"><a href="#">Polo T-Shirt</a></h4>
+														<h4 class="aa-product-title"><a href="#">{{$prdlist->name}}</a></h4>
 														<span class="aa-product-price">$45.50</span><span class="aa-product-price"><del>$65.50</del></span>
 													</figcaption>
 												</figure>
 											</li>
+											@endforeach
 											<!-- start single product item -->
 										</ul>
 									</div>
+									@endforeach
 									<!-- / men product category -->
 								</div>           
 							</div>
