@@ -52,6 +52,8 @@
                                         <th>Category Id</th>
                                         <th>Category Name</th>
                                         <th>Category Slug</th>
+                                        <th>Parent Category</th>
+                                        <th>Category Image</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -62,6 +64,9 @@
                                         <td>{{$category->id}}</td>
                                         <td>{{$category->category_name}}</td>
                                         <td>{{$category->category_slug}}</td>
+                                        <td>{{$category->getParentNames()}}</td>
+                                        <!-- <td>{{\App\Models\Admin\Category::getDepth($category->parent_category_id)}}</td> -->
+                                        <td><img src="{{asset('storage/media/'.$category->category_image)}}" alt="Category Image" width="40px"></td>
                                         <td class="py-0 align-middle">
                                             <div class="btn-group btn-group-sm">
                                                 <form method="POST" action="{{route('category.manage', $category->id)}}">
@@ -85,6 +90,8 @@
                                         <th>Category Id</th>
                                         <th>Category Name</th>
                                         <th>Category Slug</th>
+                                        <th>Parent Category</th>
+                                        <th>Category Image</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>

@@ -290,15 +290,19 @@
                             </div>
                             <div class="card-header"><h3 class="card-title">Product Attributes</h3>
                                 <div class="card-tools">
-                                    <button type="button" id="add_more" class="btn btn-warning add_more" title="Add"><i class="fas fa-plus"></i> Add</button>
+                                    <input type="hidden" class="form-control" id="attr_count" name="attr_count" value="{{count($productAttrs)}}">
                                 </div>
                             </div>
                             <!-- product-attributes row -->
+                            @php
+                                $loop_counta = 1;
+                            @endphp
                             @foreach($productAttrs as $key => $row)
                             <?php
+                                $loop_countd = $loop_counta;
                                 $prdAttr = (array)$row;
                             ?>
-                            <div class="row" id="product_append_1">
+                            <div class="row" class="product_append" id="product_append_{{$loop_counta++}}">
                                 <input type="hidden" class="form-control" id="idAttr" name="idAttr[]" value="{{$prdAttr['id']}}">
                                 <div class="col-md-2">
                                 <div class="form-group">
@@ -369,8 +373,12 @@
                                 </div>
                                 </div>
                                 <div class="col-md-1">
-                                <div class="form-group"><label>Remove</label>
-                                    <button type="button" id="remove_1" class="form-control btn btn-danger" title="Remove"><i class="fas fa-trash"></i></button>
+                                <div class="form-group"><label>Action</label>
+                                @if($loop_counta == 2)
+                                    <button type="button" id="add_more" class="btn btn-warning add_more" title="Add"><i class="fas fa-plus"></i> Add</button>
+                                @else
+                                    <a href="{{url('admin/product/productAttr_delete/'.$prdAttr['id'].'/'.$id)}}"><button id="remove_{{$loop_countd}}" class="form-control btn btn-danger" title="Remove" onclick="remove_row('{{$loop_countd}}')"><i class="fas fa-trash"></i></button></a>
+                                @endif
                                 </div>
                                 </div>
                             </div>
@@ -407,7 +415,8 @@
         <script src="{{asset('admin/plugins/toastr/toastr.min.js')}}"></script>
 		<script>
             $(document).ready(function(){
-                var count_row = 1;
+                var attr_cnt = $('#attr_count').val();
+                var count_row = attr_cnt;
                 $("#add_more").click(function(){  
                     count_row++;
                     var divrow='<div class="row" id="product_append_'+count_row+'">';

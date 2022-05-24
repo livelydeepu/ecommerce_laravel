@@ -12,4 +12,9 @@ class Tax extends Model
     protected $fillable = ['tax_name', 'tax_value'];
 
     public $table = "taxes";
+
+    public function Products()
+    {
+        return $this->hasMany(Product::class, 'tax_id');
+    }
 }

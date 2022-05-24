@@ -15,8 +15,21 @@ class CategoryController extends Controller
     {
         $user_id = Auth::user()->id;
         $categories = Category::all();
+        //$categories = Category::with('category')->get();
         $data = ['page_title'=>'Categories', 'categories'=>$categories];
         return view('admin.category', $data);
+    }
+
+    public function getDepth($parent_category_id) {
+        $categories = Categories::find($parent_category_id);
+ 
+        if ($categories) {
+            if ($categories->parent_category_id == 0) {
+                return $categories->category_name;
+            } else {
+                return self::getDepth($categories->parent_category_id);
+            }
+        }
     }
 
     public function manage(Request $request, $id = '')
@@ -84,7 +97,7 @@ class CategoryController extends Controller
             }
             $image = $request->file('category_image');
             $ext = $image->extension();
-            $image_name = time().'.'.$ext;
+            $image_name = 'C'.time().'.'.$ext;
             $image->storeAs('/public/media/', $image_name);
             $category->category_image = $image_name;
         }

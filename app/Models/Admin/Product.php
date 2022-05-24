@@ -41,6 +41,11 @@ class Product extends Model
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }
 
+    public function Tax()
+    {
+        return $this->belongsTo(Tax::class, 'tax_id', 'id');
+    }
+
     public function Product_Attributes()
     {
         return $this->hasMany(Product_Attributes::class, 'product_id', 'id');

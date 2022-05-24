@@ -55,6 +55,15 @@ class BrandController extends Controller
             'name' => $request->post('name'),
         ]);
 
+        if($request->post('id') > 0) {
+            $brand = Brand::find($request->post('id'));
+            $msg = 'Brand Updated Successfully';
+        }
+        else {
+            $brand = new Brand();
+            $msg = 'Brand Created Successfully';
+        }
+
         if($request->hasfile('image')) {
             if($request->post('id') > 0) {
                 $arrImage = DB::table('brands')->where(['id'=>$request->post('id')])->get();
@@ -64,21 +73,15 @@ class BrandController extends Controller
             }
             $image = $request->file('image');
             $ext = $image->extension();
-            $image_name = time().'.'.$ext;
+            $image_name = 'B'.time().'.'.$ext;
             $image->storeAs('/public/media/', $image_name);
+            $brand->image = $image_name;
         }
 
-        if($request->post('id') > 0) {
-            $data['image'] = $image_name;
-            $brand = Brand::find($request->post('id'));
-            $brand->update($data);
-            return redirect()->route('brand')->with('success', 'Brand Updated Successfully');
-        }
-        else {
-            $data['image'] = $image_name;
-            Brand::create($data);
-            return redirect()->route('brand')->with('success', 'Brand Created Successfully');
-        }
+        $brand->name = $request->post('name');
+        $brand->save();
+
+        return redirect()->route('brand')->with('success', $msg);
     }
 
     public function status(Request $request, $status, $id)
